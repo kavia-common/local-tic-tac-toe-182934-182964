@@ -94,11 +94,12 @@ body {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 22px; /* Slightly larger for chess icon clarity */
   color: var(--color-text);
   background: rgba(17, 24, 39, 0.04);
   border: 1px solid rgba(17, 24, 39, 0.08);
-  transition: transform var(--transition), background-color var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), background-color var(--transition), box-shadow var(--transition), color var(--transition);
 }
 
 .chip.active {
@@ -158,11 +159,11 @@ body {
   box-shadow: var(--shadow-sm);
   display: grid;
   place-items: center;
-  font-size: clamp(28px, 8vw, 42px);
+  font-size: clamp(30px, 8vw, 46px); /* Slight increase for symbol legibility */
   font-weight: 800;
   color: var(--color-text);
   cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background-color var(--transition), color var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background-color var(--transition), color var(--transition), text-shadow var(--transition);
   user-select: none;
 }
 
@@ -185,12 +186,14 @@ body {
   color: var(--color-primary);
   background: linear-gradient(180deg, #ffffff, #eef2ff);
   border-color: rgba(37, 99, 235, 0.35);
+  text-shadow: 0 1px 0 rgba(37, 99, 235, 0.15);
 }
 
 .cell.is-o {
   color: var(--color-secondary);
   background: linear-gradient(180deg, #ffffff, #fff7ed);
   border-color: rgba(245, 158, 11, 0.35);
+  text-shadow: 0 1px 0 rgba(245, 158, 11, 0.18);
 }
 
 .cell.win {

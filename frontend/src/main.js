@@ -6,6 +6,17 @@ import "./style.css";
  */
 export function initTicTacToe() {
   const app = document.getElementById("app");
+
+  // Mapping between internal values and display/accessibility strings
+  const DISPLAY_MAP = {
+    X: "♞", // Knight
+    O: "♛", // Queen
+  };
+  const NAME_MAP = {
+    X: "Knight",
+    O: "Queen",
+  };
+
   app.innerHTML = `
     <div class="page">
       <div class="container">
@@ -16,11 +27,11 @@ export function initTicTacToe() {
 
         <section class="status-card" role="region" aria-label="Game status">
           <div id="status" class="status">
-            <span id="playerX" class="chip chip-x">X</span>
+            <span id="playerX" class="chip chip-x" aria-label="Player X (Knight)" title="Player X (Knight)">♞</span>
             <span class="vs">vs</span>
-            <span id="playerO" class="chip chip-o">O</span>
+            <span id="playerO" class="chip chip-o" aria-label="Player O (Queen)" title="Player O (Queen)">♛</span>
           </div>
-          <div id="message" class="message" aria-live="polite">Player X's turn</div>
+          <div id="message" class="message" aria-live="polite">Player Knight's turn</div>
         </section>
 
         <section class="board-wrap" role="region" aria-label="Tic Tac Toe board">
@@ -91,7 +102,8 @@ export function initTicTacToe() {
     if (result?.winner) {
       isGameOver = true;
       const w = result.winner;
-      messageEl.textContent = `Player ${w} wins!`;
+      const winnerName = NAME_MAP[w];
+      messageEl.textContent = `Player ${winnerName} wins!`;
       messageEl.classList.remove("neutral");
       messageEl.classList.add(w === "X" ? "xwin" : "owin");
       // Highlight winning cells
@@ -112,7 +124,8 @@ export function initTicTacToe() {
       return;
     }
     // Ongoing
-    messageEl.textContent = `Player ${xIsNext ? "X" : "O"}'s turn`;
+    const nextSymbol = xIsNext ? "X" : "O";
+    messageEl.textContent = `Player ${NAME_MAP[nextSymbol]}'s turn`;
     messageEl.classList.remove("xwin", "owin", "draw");
     messageEl.classList.add("neutral");
     updateAriaLabels();
@@ -122,7 +135,7 @@ export function initTicTacToe() {
     const cells = boardEl.querySelectorAll(".cell");
     cells.forEach((btn, idx) => {
       const v = board[idx];
-      const status = v ? `${v}` : "empty";
+      const status = v ? `${NAME_MAP[v]} (${DISPLAY_MAP[v]})` : "empty";
       btn.setAttribute("aria-label", `Cell ${idx + 1} ${status}`);
     });
   }
@@ -130,10 +143,11 @@ export function initTicTacToe() {
   function render() {
     const cells = boardEl.querySelectorAll(".cell");
     cells.forEach((btn, idx) => {
-      btn.textContent = board[idx] ?? "";
-      btn.classList.toggle("is-x", board[idx] === "X");
-      btn.classList.toggle("is-o", board[idx] === "O");
-      btn.disabled = isGameOver || !!board[idx];
+      const v = board[idx];
+      btn.textContent = v ? DISPLAY_MAP[v] : "";
+      btn.classList.toggle("is-x", v === "X");
+      btn.classList.toggle("is-o", v === "O");
+      btn.disabled = isGameOver || !!v;
       btn.setAttribute("tabindex", "0");
     });
     updateStatus();
